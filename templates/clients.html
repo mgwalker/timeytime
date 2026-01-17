@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="clients">
+  {% if clients|length %}
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Description</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+          <tr>
+            <td>{{ client.name }}</td>
+            <td>
+              <div class="token" style="--color: {{ client.color }}"></div>
+            </td>
+            <td class="fill">
+              {{ client.description }}
+            </td>
+            <td>
+              <a href="{% url "clients" %}?edit={{ client.id }}">✏️</a>
+            </td>
+            <td>
+              <a data-delete-client="{{ client.id }}" data-client-name="{{ client.name }}">🗑️</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <hr>
+  {% endif %}
+
+  <div style="display: inline-block;">
+    <h3 style="margin-bottom: 1rem;">
+      {% if edit.name %}Edit{% else %}New{% endif %} client
+    </h3>
+
+    <form style="display: flex; flex-direction: column;" action="{% if edit.name %}{% url "edit_client" %}{% else %}{% url "add_client" %}{% endif %}" method="POST">
+      <label class="required">
+        Name:
+        <input type="text" name="name"{% if edit.name %} value="{{ edit.name }}"{% endif %}>
+      </label>
+
+      <label>
+        Color:
+        <input type="color" name="color" {% if edit %}value="{{ edit.color }}"{% else %}value="#fff"{% endif %}>
+      </label>
+
+      <label>
+        Description:
+        <br>
+        <textarea name="description">{% if edit %}{{ edit.description }}{% endif %}</textarea>
+      </label>
+
+      <button>{% if edit.name %}Edit{% else %}Create new{% endif %} client</button>
+
+      {% if edit.name %}
+      <input type="hidden" name="id" value="{{ client.id}}"
+      {% endif %}
+      {% csrf_token %}
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block js_body %}
+  <script type="module" src="{% static "js/clients.js" %}"></script>
+{% endblock %}

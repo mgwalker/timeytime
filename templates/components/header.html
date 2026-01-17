@@ -1,0 +1,18 @@
+<header>
+  <div class="top">
+  <h2>{{ user.username }}</h2>
+  <div class="flex-stretch"></div>
+  <a href="{% url "clients" %}">clients</a>
+  <div class="flex-stretch"></div>
+  <a href="{% url "logout" %}" role="button">Log out</a>
+  </div>
+    {% if messages %}
+    <div id="banner">
+    {% for message in messages %}
+      <div class="message">
+        {{ message }}
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+</header>

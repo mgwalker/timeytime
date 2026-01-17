@@ -6,11 +6,14 @@ dist/
 wheels/
 *.egg-info
 
+# JS tools
+node_modules
+
 # Virtual environments
 .venv
 
-# Collected statics
-static
+# Collected static assets
+assets
 
 # Database
 storage
