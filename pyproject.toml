@@ -1,0 +1,19 @@
+[project]
+name = "timeytime"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.0.1",
+    "django-otp-webauthn>=0.8.0",
+]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=6.1.0",
+    "ruff>=0.14.13",
+]
+prod = [
+    "gunicorn>=23.0.0",
+]

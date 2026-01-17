@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load otp_webauthn %}
+
+{% block content %}
+<form method="post">
+    <span id="passkey-verification-placeholder"></span>
+
+    <template id="passkey-verification-available-template">
+        <button type="button" id="passkey-verification-button">Login using a Passkey</button>
+        <div id="passkey-verification-status-message"></div>
+    </template>
+
+    <template id="passkey-verification-unavailable-template">
+        <p>Sorry, your browser has no Passkey support</p>
+    </template>
+
+    {% render_otp_webauthn_auth_scripts %}
+</form>
+{% endblock %}
