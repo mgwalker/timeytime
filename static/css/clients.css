@@ -1,0 +1,33 @@
+#clients {
+  table {
+    border-spacing: 0;
+    width: 40rem;
+    td {
+      white-space: nowrap;
+
+      &.fill {
+        white-space: inherit;
+        width: 100%;
+      }
+    }
+
+    th, td {
+      margin: 0;
+      padding: 1rem 1rem;
+    }
+
+    thead tr {
+      border: 1px solid #d8d8d8;
+      background: black;
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #d8d8d8;
+    }
+  }
+
+  hr {
+    margin: 2rem 0;
+  }
+}

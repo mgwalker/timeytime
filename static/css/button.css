@@ -1,0 +1,68 @@
+button:not(.plain), a[role="button"] {
+  font-family:
+    Source Sans Pro Web,
+    Helvetica Neue,
+    Helvetica,
+    Roboto,
+    Arial,
+    sans-serif;
+  font-size: 1.06rem;
+  line-height: 0.9;
+  color: #fff;
+  background-color: #005ea2;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  align-items: center;
+  border: 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  -moz-column-gap: 0.5rem;
+  column-gap: 0.5rem;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  color: #1b1b1b;
+  background-color: #00bde3;
+  width: auto;
+
+  &:focus {
+    outline: 0.25rem solid #2491ff;
+    outline-offset: 0.25rem;
+  }
+
+  &:active {
+    color: #fff;
+    background-color: #07648d;
+  }
+
+  &:hover {
+    color: #1b1b1b;
+    background-color: #28a0cb;
+  }
+
+  &.red {
+    background-color: #d83933;
+    color: white;
+
+    &:active {
+      background-color: #8b0a03;
+    }
+
+    &:hover{
+      background-color: #b50909;
+    }
+  }
+}
+
+button.plain {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}

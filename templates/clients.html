@@ -57,10 +57,12 @@
         <textarea name="description">{% if edit %}{{ edit.description }}{% endif %}</textarea>
       </label>
 
+      <label>Timezone: <input type="text" name="timezone"{% if edit.timezone %} value="{{ edit.timezone }}"{% endif %}></label>
+
       <button>{% if edit.name %}Edit{% else %}Create new{% endif %} client</button>
 
       {% if edit.name %}
-      <input type="hidden" name="id" value="{{ client.id}}"
+      <input type="hidden" name="id" value="{{ edit.id}}">
       {% endif %}
       {% csrf_token %}
     </form>

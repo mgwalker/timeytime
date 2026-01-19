@@ -1,13 +1,6 @@
-from django.contrib.auth import logout as log_out
 from django.shortcuts import render, redirect
 from backend.models import Client
 from django.contrib import messages
-
-
-def index(request):
-    if request.user.is_authenticated:
-        return render(request, "index.auth.html")
-    return render(request, "index.html")
 
 
 def clients(request, **kwargs):
@@ -65,6 +58,7 @@ def edit_client(request):
             edit.name = post["name"][0]
             edit.color = post["color"][0]
             edit.description = post["description"][0]
+            edit.timezone = post["timezone"][0]
             edit.save()
 
             return redirect("clients")
@@ -82,8 +76,3 @@ def delete_client(request):
             Client.objects.filter(id=id).delete()
         return redirect("clients")
     return render(request, "index.html")
-
-
-def logout(request):
-    log_out(request)
-    return redirect("/")

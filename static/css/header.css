@@ -1,0 +1,41 @@
+header {
+    position: sticky;
+    top: 0;
+    background: black;
+    color: white;
+    margin-bottom: 1.5rem;
+
+    @media screen and (min-width: 640px) {
+      box-shadow: 0 0.25rem 0.25rem #888;
+    }
+
+    .top {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+
+      a {
+        color: white;
+        &:visited, &:active {
+          color: white;
+        }
+        &:hover {
+          color:orange;
+        }
+      }
+
+    & button {
+      align-self: flex-end;
+    }
+  }
+
+  #banner {
+    color: black;
+    background: #ffc995;
+    padding: 0.5rem 3rem;
+
+    .message {
+      margin: 1rem 0;
+    }
+  }
+}

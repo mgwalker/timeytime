@@ -1,0 +1,59 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+h2, h3 {
+  margin: 0;
+}
+
+main {
+  padding: 0;
+  @media all and (min-width: 640px) {
+    padding: 0 3rem;
+  }
+}
+
+a {
+  cursor: pointer;
+}
+
+.flex-stretch {
+  flex: 1 0;
+}
+
+label {
+  margin-bottom: 1rem;
+
+  &.required {
+    &::after {
+      color: red;
+      padding-left: 0.25rem;
+      content: "*";
+    }
+  }
+}
+
+textarea {
+  width: 40rem;
+  height: 10rem;
+}
+
+.margin-bottom-1 {
+  margin-bottom: 1rem;
+}
+
+.token {
+  background-color: var(--color);
+  color: contrast-color(var(--color));
+  min-width: 3rem;
+  min-height: 2rem;
+  border: 1px solid rgba(0,0,0,0.35);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

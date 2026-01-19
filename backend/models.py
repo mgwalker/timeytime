@@ -1,16 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import UTC
+from datetime import datetime
+
+
+def _utc_now():
+    return datetime.utcnow().replace(tzinfo=UTC)
 
 
 class Client(models.Model):
     name = models.TextField(null=False)
     description = models.TextField(null=True, default=None)
     color = models.CharField(max_length=7, null=True, default=None)
+    timezone = models.TextField(null=True, default=None)
     owner = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
 
 
 class Entry(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=False)
-    start = models.DateTimeField(auto_now_add=True)
-    end = models.DateTimeField(null=True, blank=True)
+    start_time = models.DateTimeField(default=_utc_now)
+    end_time = models.DateTimeField(null=True, blank=True)
     note = models.TextField(null=True, default=None)
+
+    @property
+    def active(self):
+        return self.end_time is None
+
+    @classmethod
+    def start(cls, id):
+        cls.stop()
+        client = Client.objects.get(id=id)
+        cls.objects.create(client=client)
+
+    @classmethod
+    def stop(cls):
+        active = cls.objects.filter(end_time=None).first()
+        if active:
+            active.end_time = datetime.utcnow().replace(tzinfo=UTC)
+            active.save()

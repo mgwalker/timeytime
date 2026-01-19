@@ -1,6 +1,101 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<div id="index">
+  {% comment %}
+  {% if active %}
+    <div class="active">
+      <h3>Active timer:</h3>
+      <div class="token" style="--color: {{ active.client.color }}">{{ active.client.name }}</div>
+      <time data-as-duration datetime="{{ active.start_time | date:"c" }}"></time>
+      <button class="red" data-stop-entry="{{ active.id }}">stop</button>
+    </div>
+  {% endif %}
+  {% endcomment %}
 
+  <div class="timers">
+    <h3>Start a timer</h3>
 
+    {% for client in clients %}
+      <div class="margin-bottom-1">
+        <button class="plain" id="{{ client.id }}">
+          <div class="token" style="--color: {{ client.color }}">
+            {{ client.name }}
+          </div>
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if entries %}
+    <table class="flex-stretch">
+      <thead>
+        <th colspan="5"></th>
+        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">add note</th>
+        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">edit</th>
+        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">delete</th>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+          <tr>
+            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
+            <td>
+              {{ entry.client.name }}
+            </td>
+            <td>
+              {{ entry.start_time | date:"g:i A T" }}
+            </td>
+            <td>
+              {% if entry.end_time %}
+                {{ entry.end_time | date:"g:i A T" }}
+              {% else %}
+                <button class="red" data-stop-entry="{{ entry.id }}">stop</button>
+              {% endif %}
+            </td>
+            <td>
+              {% if entry.end_time %}
+                {{ entry.duration }}
+              {% else %}
+                <time data-as-duration datetime="{{ entry.start_time | date:"c" }}"></time>
+              {% endif %}
+            </td>
+            <td>🗒️</td>
+            <td>
+              <a href="{% url "clients" %}?edit={{ entry.id }}">✏️</a>
+            </td>
+            <td>
+              <a data-delete-entry="{{ entry.id }}" data-entry-start="{{ entry.start_time | date:"c" }}" data-client-name="{{ entry.client.name }}">🗑️</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  {% if today %}
+    <aside class="daily-summary">
+      <h3>Summary for today</h3>
+      <table>
+        {% for entry in today.values %}
+          <tr>
+            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
+            <td>{{ entry.client.name }}</td>
+            <td>
+              {% if entry.active %}
+                <div data-duration-from="{{ entry.active | date:"c" }}" data-duration-offset="{{ entry.time }}"></div>
+              {% else %}
+                {{ entry.time }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </aside>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block js_body %}
+<script type="module" src="{% static "js/index.js" %}"></script>
 {% endblock %}
