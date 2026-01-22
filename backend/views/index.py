@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from backend.models import Client, Entry
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from backend.util import seconds_to_duration, get_tz_entry, WEEKDAYS
 
@@ -10,8 +10,10 @@ def index(request):
         clients = Client.objects.filter(owner=request.user)
         active = Entry.objects.filter(client__owner=request.user, end_time=None).first()
 
+        week = datetime.now() - timedelta(days=8)
+
         entries = (
-            Entry.objects.filter(client__owner=request.user)
+            Entry.objects.filter(client__owner=request.user, start_time__gte=week)
             .order_by("start_time")
             .reverse()
         )
