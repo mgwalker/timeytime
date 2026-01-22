@@ -3,20 +3,20 @@
 
 {% block content %}
 <div id="index">
-  {% comment %}
   {% if active %}
-    <div class="active">
+    <div class="active mobile-only">
       <h3>Active timer:</h3>
       <div class="token" style="--color: {{ active.client.color }}">{{ active.client.name }}</div>
-      <time data-as-duration datetime="{{ active.start_time | date:"c" }}"></time>
+      <time class="flex-stretch" data-as-duration datetime="{{ active.start_time | date:"c" }}"></time>
       <button class="red" data-stop-entry="{{ active.id }}">stop</button>
     </div>
+
+    <hr class="mobile-only">
   {% endif %}
-  {% endcomment %}
 
   <div class="timers">
     <h3>Start a timer</h3>
-
+    <div class="timers-row">
     {% for client in clients %}
       <div class="margin-bottom-1">
         <button class="plain" id="{{ client.id }}">
@@ -26,16 +26,22 @@
         </button>
       </div>
     {% endfor %}
+    </div>
   </div>
 
-  {% if entries %}
+  <div class="entries wide-only">
+  {% if days.values|length %}
+  {% for day,entries in days.items %}
+  <h3>{{ day }}</h3>
     <table class="flex-stretch">
+      {% comment %}
       <thead>
         <th colspan="5"></th>
         <th style="writing-mode: vertical-rl; transform: rotate(190deg);">add note</th>
         <th style="writing-mode: vertical-rl; transform: rotate(190deg);">edit</th>
         <th style="writing-mode: vertical-rl; transform: rotate(190deg);">delete</th>
       </thead>
+      {% endcomment %}
       <tbody>
         {% for entry in entries %}
           <tr>
@@ -71,8 +77,11 @@
         {% endfor %}
       </tbody>
     </table>
+  {% endfor %}
   {% endif %}
+  </div>
 
+  <div class="wide-only">
   {% if today %}
     <aside class="daily-summary">
       <h3>Summary for today</h3>
@@ -93,6 +102,7 @@
       </table>
     </aside>
   {% endif %}
+  </div>
 </div>
 {% endblock %}
 

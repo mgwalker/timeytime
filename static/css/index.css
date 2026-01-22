@@ -11,22 +11,31 @@
   div.active {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
+    font-size: 2rem;
 
     .token {
-      @media screen and (max-width: 640px) {
-        border: 0;
-        border-radius: 0;
-      }
+      border: 0;
+      border-radius: 0;
+      width: 100%;
+      padding: 1rem 0;
     }
 
     time {
       text-align: center;
-      @media screen and (max-width: 640px) {
-        margin: 0.5rem 0;
-        font-weight: 700;
-      }
+      margin: 0.5rem 0;
+      font-weight: 700;
     }
+
+    button {
+      padding: 3rem;
+    }
+  }
+
+  hr {
+    width: calc(100% - 6px);
+    border: 3px solid black;
   }
 
   div.timers {
@@ -35,15 +44,47 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-
     width: 100px;
+
+    @media screen and (max-width: 640px) {
+      font-size: 2rem;
+      width: 100%;
+    }
+
+    @media screen and (min-width: 640px) {
+    }
 
     h3 {
       margin-bottom: 1rem;
     }
 
+    button {
+      height: 100%;
+    }
+
+    .timers-row {
+      @media screen and (max-width: 640px) {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+      }
+    }
+
     & .token {
       padding: 1rem;
+      @media screen and (max-width: 640px) {
+        font-size: 2rem;
+        min-width: 10rem;
+      }
+    }
+  }
+
+  div.entries {
+    h3 {
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      background: #444;
+      color: white;
     }
   }
 
@@ -72,6 +113,12 @@
       height: 1rem;
       min-height: 0;
       min-width: 0;
+    }
+  }
+
+  .daily-summary {
+    h3 {
+      margin-bottom: 1rem;
     }
   }
 }

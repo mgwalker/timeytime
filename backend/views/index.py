@@ -2,12 +2,7 @@ from django.shortcuts import render
 from backend.models import Client, Entry
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from backend.util import (
-    get_entry_duration,
-    get_entry_end_time,
-    get_entry_start_time,
-    seconds_to_duration,
-)
+from backend.util import seconds_to_duration, get_tz_entry, WEEKDAYS
 
 
 def index(request):
@@ -22,13 +17,25 @@ def index(request):
         )
 
         today = {}
+        days = {}
+
         for entry in entries:
+            entry = get_tz_entry(entry)
+
             start_of_day = datetime.now()
             if entry.client.timezone:
                 start_of_day = datetime.now(tz=ZoneInfo(entry.client.timezone))
             start_of_day = start_of_day.replace(
                 hour=0, minute=0, second=0, microsecond=0
             )
+
+            dow = WEEKDAYS[entry.start_time.weekday()]
+
+            if dow != "Saturday" or len(days.keys()) == 0:
+                if dow not in days:
+                    days[dow] = []
+                days[dow].append(entry)
+
             if entry.start_time > start_of_day:
                 if entry.end_time:
                     if entry.client.name not in today:
@@ -37,7 +44,7 @@ def index(request):
                             "client": entry.client,
                         }
                     today[entry.client.name]["time"] += (
-                        get_entry_end_time(entry) - get_entry_start_time(entry)
+                        entry.end_time - entry.start_time
                     ).total_seconds()
                 else:
                     if entry.client.name not in today:
@@ -46,23 +53,11 @@ def index(request):
                             "active": "",
                             "client": entry.client,
                         }
-                    today[entry.client.name]["active"] = get_entry_start_time(entry)
+                    today[entry.client.name]["active"] = entry.start_time
 
         for times in today.values():
             if "active" not in times:
                 times["time"] = seconds_to_duration(times["time"])
-
-        entries = [
-            {
-                "id": entry.id,
-                "start_time": get_entry_start_time(entry),
-                "end_time": get_entry_end_time(entry),
-                "duration": get_entry_duration(entry),
-                "note": entry.note,
-                "client": entry.client,
-            }
-            for entry in entries
-        ]
 
         return render(
             request,
@@ -70,7 +65,7 @@ def index(request):
             {
                 "active": active,
                 "clients": clients,
-                "entries": entries,
+                "days": days,
                 "today": today,
             },
         )

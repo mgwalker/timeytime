@@ -1,5 +1,22 @@
 from zoneinfo import ZoneInfo
 
+WEEKDAYS = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+]
+
+
+def get_tz_entry(entry):
+    entry.start_time = get_entry_start_time(entry)
+    entry.end_time = get_entry_end_time(entry)
+    entry.duration = get_entry_duration(entry)
+    return entry
+
 
 def get_entry_start_time(entry):
     if entry.start_time and entry.client.timezone:
