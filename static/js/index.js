@@ -11,6 +11,29 @@ const stop = (e) => {
   window.location.href = `/stop?id=${id}`;
 };
 
+const editEntry = (e) => {
+  const id = e.target.dataset.editEntry;
+  const row = document.querySelector(`tr[data-edit-row="${id}"]`);
+  if (row) {
+    row.classList.toggle("display-none");
+  }
+};
+
+const beforeSubmitEdit = (e) => {
+  const form = e.target;
+
+  const startTime = new Date(
+    Date.parse(form.querySelector(`input[name="start_time_raw"]`).value),
+  ).toISOString();
+
+  const endTime = new Date(
+    Date.parse(form.querySelector(`input[name="end_time_raw"]`).value),
+  ).toISOString();
+
+  form.querySelector(`input[name="start_time"]`).value = startTime;
+  form.querySelector(`input[name="end_time"]`).value = endTime;
+};
+
 const deleteEntry = (e) => {
   const client = e.target.dataset.clientName;
   const start = new Date(e.target.dataset.entryStart).toLocaleTimeString();
@@ -38,6 +61,14 @@ const init = () => {
   $("a[data-delete-entry]").forEach((element) => {
     element.addEventListener("click", deleteEntry);
   });
+
+  $("a[data-edit-entry]").forEach((element) => {
+    element.addEventListener("click", editEntry);
+  });
+
+  $("form[data-edit-entry]").forEach((element) =>
+    element.addEventListener("submit", beforeSubmitEdit),
+  );
 };
 
 document.addEventListener("DOMContentLoaded", init);

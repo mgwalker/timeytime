@@ -1,4 +1,6 @@
+from datetime import datetime
 from zoneinfo import ZoneInfo
+import os
 
 WEEKDAYS = [
     "Monday",
@@ -51,3 +53,25 @@ def get_entry_duration(entry):
             return f"{hours}:{minutes:02d}"
         return f"{minutes} minutes"
     return None
+
+
+def isto_quick_timestamp():
+    tz = ZoneInfo("America/Chicago")
+    now = datetime.now(tz=tz)
+
+    # The offset expected by the form is minutes from UTC. And weirdly,
+    # it expects POSITIVE numbers for timezones behind UTC and NEGATIVE
+    # numbers for timezones ahead of UTC. Bass-ackwards, as they say.
+    tzoffset = -(tz.utcoffset(now).total_seconds() / 60)
+
+    username = os.environ.get("ISTO_USERNAME")
+    password = os.environ.get("ISTO_PASSWORD")
+
+    if not username or not password:
+        return
+
+    timestamp = now.strftime("%-m/%-d/%Y %-I:%M:%S %p")
+
+    smagentname = "tlmisi2-prod-dc2prisivag0013-1"
+
+    url = f"https://tlmisi2.adp.com/adptlmqts/Private/quickTSprivate.aspx?TimeZoneOffset={tzoffset}&TimeStamp={timestamp}&BrowserTime={timestamp}&USER={username}&PASSWORD={password}&smagentname={smagentname}"

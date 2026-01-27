@@ -1,4 +1,4 @@
-button:not(.plain), a[role="button"] {
+button:not(.plain), [role="button"] {
   font-family:
     Source Sans Pro Web,
     Helvetica Neue,

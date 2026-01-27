@@ -13,6 +13,7 @@ urlpatterns = [
     path("start", views.start_timer, name="start_timer"),
     path("stop", views.stop_timer, name="stop_timer"),
     # Entries
+    path("edit-entry/", views.edit_entry, name="edit_entry"),
     path("delete-entry/", views.delete_entry, name="delete_entry"),
     # Authentication
     path("webauthn/", include("django_otp_webauthn.urls", namespace="otp_webauthn")),

@@ -54,7 +54,7 @@ def edit_client(request):
         post = dict(request.POST)
         id = post["id"][0] if "id" in post else None
         if "name" in post and post["name"][0] and id:
-            edit = Client.objects.get(id=id)
+            edit = Client.objects.get(id=id, owner=request.user)
             edit.name = post["name"][0]
             edit.color = post["color"][0]
             edit.description = post["description"][0]
@@ -73,6 +73,6 @@ def delete_client(request):
     if request.user.is_authenticated:
         id = request.GET.get("id")
         if id:
-            Client.objects.filter(id=id).delete()
+            Client.objects.filter(id=id, owner=request.user).delete()
         return redirect("clients")
     return render(request, "index.html")

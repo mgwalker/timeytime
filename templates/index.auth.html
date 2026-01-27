@@ -68,10 +68,23 @@
             </td>
             <td>🗒️</td>
             <td>
-              <a href="{% url "clients" %}?edit={{ entry.id }}">✏️</a>
+              <a data-edit-entry="{{ entry.id }}">✏️</a>
             </td>
             <td>
               <a data-delete-entry="{{ entry.id }}" data-entry-start="{{ entry.start_time | date:"c" }}" data-client-name="{{ entry.client.name }}">🗑️</a>
+            </td>
+          </tr>
+          <tr data-edit-row="{{ entry.id }}" class="display-none">
+            <td colspan="8">
+              <form data-edit-entry class="flex-column" action="/edit-entry/" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ entry.id }}">
+                <label>Start:<input name="start_time_raw" type="datetime-local" value="{{ entry.start_time|date:"Y-m-d" }}T{{ entry.start_time|date:"H:i"}}"></label>
+                <label>End:<input name="end_time_raw" type="datetime-local" value="{{ entry.end_time|date:"Y-m-d" }}T{{ entry.end_time|date:"H:i"}}"></label>
+                <input type="hidden" name="start_time">
+                <input type="hidden" name="end_time">
+                <input type="submit" value="Save" role="button">
+              </form>
             </td>
           </tr>
         {% endfor %}
