@@ -10,10 +10,17 @@ def index(request):
         clients = Client.objects.filter(owner=request.user)
         active = Entry.objects.filter(client__owner=request.user, end_time=None).first()
 
-        week = datetime.now() - timedelta(days=8)
+        start_of_week = (
+            datetime.now()
+            .astimezone(ZoneInfo("America/Chicago"))
+            .replace(hour=0, minute=0, second=0, microsecond=0)
+        )
+        start_of_week -= timedelta(days=start_of_week.weekday() + 1)
 
         entries = (
-            Entry.objects.filter(client__owner=request.user, start_time__gte=week)
+            Entry.objects.filter(
+                client__owner=request.user, start_time__gte=start_of_week
+            )
             .order_by("start_time")
             .reverse()
         )
