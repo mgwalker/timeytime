@@ -27,6 +27,7 @@ def index(request):
 
         today = {}
         days = {}
+        week = {}
 
         for entry in entries:
             entry = get_tz_entry(entry)
@@ -41,6 +42,9 @@ def index(request):
             dow = WEEKDAYS[entry.start_time.weekday()]
 
             if dow != "Saturday" or len(days.keys()) == 0:
+                if entry.client not in week:
+                    week[entry.client] = []
+                week[entry.client].append(entry)
                 if dow not in days:
                     days[dow] = []
                 days[dow].append(entry)
@@ -68,6 +72,31 @@ def index(request):
             if "active" not in times:
                 times["time"] = seconds_to_duration(times["time"])
 
+        week = [
+            {
+                "active": False,
+                "client": client,
+                "entries": week[client],
+                "time": [
+                    (entry.end_time - entry.start_time).total_seconds()
+                    for entry in week[client]
+                    if entry.end_time
+                ],
+            }
+            for client in week
+        ]
+
+        for item in week:
+            item["time"] = sum(item["time"])
+            active = next(
+                (entry for entry in item["entries"] if not entry.end_time), None
+            )
+            if active:
+                item["active"] = True
+                item["from"] = active.start_time
+            else:
+                item["time"] = seconds_to_duration(item["time"])
+
         return render(
             request,
             "index.auth.html",
@@ -76,6 +105,7 @@ def index(request):
                 "clients": clients,
                 "days": days,
                 "today": today,
+                "week": week,
             },
         )
     return render(request, "index.html")

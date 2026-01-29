@@ -12,7 +12,7 @@ const handleDuration = (time) => {
     const minutes = `${Math.round((diff - hours * 3600) / 60)}`;
 
     if (hours > 0) {
-      time.innerText = `${hours}:${minutes.padStart(2, "0")}`;
+      time.innerText = `${hours}h ${minutes.padStart(2, "0")}m`;
     } else {
       time.innerText = `${minutes} minutes`;
     }

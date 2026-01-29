@@ -113,6 +113,23 @@
           </tr>
         {% endfor %}
       </table>
+      <hr>
+      <h3>Summary for the week</h3>
+      <table>
+        {% for entry in week %}
+          <tr>
+            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
+            <td>{{ entry.client.name }}</td>
+            <td>
+              {% if entry.active %}
+                <div data-duration-from="{{ entry.from | date:"c" }}" data-duration-offset="{{ entry.time }}"></div>
+              {% else %}
+                {{ entry.time }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
     </aside>
   {% endif %}
   </div>
