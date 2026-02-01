@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from backend.models import Client, Entry
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
-from backend.util import seconds_to_duration, get_tz_entry, WEEKDAYS
+
+from django.shortcuts import render
+
+from backend.models import Client, Entry
+from backend.util import WEEKDAYS, get_tz_entry, seconds_to_duration
 
 
 def index(request):

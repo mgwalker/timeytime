@@ -1,7 +1,9 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.utils.timezone import UTC
 from datetime import datetime
+
+from django.contrib.auth.models import User
+from django.db import models
+from django.utils.timezone import UTC
+
 from backend.util import isto_quick_timestamp
 
 

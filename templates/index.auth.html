@@ -95,8 +95,9 @@
   </div>
 
   <div class="wide-only">
-  {% if today %}
+  {% if today or week %}
     <aside class="daily-summary">
+      {% if today %}
       <h3>Summary for today</h3>
       <table>
         {% for entry in today.values %}
@@ -113,7 +114,11 @@
           </tr>
         {% endfor %}
       </table>
+      {% endif %}
+      {% if today and week %}
       <hr>
+      {% endif %}
+      {% if week %}
       <h3>Summary for the week</h3>
       <table>
         {% for entry in week %}
@@ -130,6 +135,7 @@
           </tr>
         {% endfor %}
       </table>
+      {% endif %}
     </aside>
   {% endif %}
   </div>
