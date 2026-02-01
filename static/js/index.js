@@ -22,16 +22,22 @@ const editEntry = (e) => {
 const beforeSubmitEdit = (e) => {
   const form = e.target;
 
-  const startTime = new Date(
-    Date.parse(form.querySelector(`input[name="start_time_raw"]`).value),
-  ).toISOString();
+  const startRaw = form.querySelector(`input[name="start_time_raw"]`).value;
+  if (startRaw) {
+    const startTime = new Date(Date.parse(startRaw)).toISOString();
+    form.querySelector(`input[name="start_time"]`).value = startTime;
 
-  const endTime = new Date(
-    Date.parse(form.querySelector(`input[name="end_time_raw"]`).value),
-  ).toISOString();
-
-  form.querySelector(`input[name="start_time"]`).value = startTime;
-  form.querySelector(`input[name="end_time"]`).value = endTime;
+    // End time is not strictly required. If the user is editing the start
+    // time of the currently-active entry, there won't be an end time.
+    const endRaw = form.querySelector(`input[name="end_time_raw"]`).value;
+    if (endRaw) {
+      const endTime = new Date(Date.parse(endRaw)).toISOString();
+      form.querySelector(`input[name="end_time"]`).value = endTime;
+    }
+  } else {
+    // If there's no start time, that's an error. Don't do anything.
+    e.preventDefault();
+  }
 };
 
 const deleteEntry = (e) => {

@@ -22,6 +22,20 @@ class Entry(models.Model):
     start_time = models.DateTimeField(default=_utc_now)
     end_time = models.DateTimeField(null=True, blank=True)
     note = models.TextField(null=True, default=None)
+    editedfrom = models.ForeignKey(
+        "self",
+        related_name="edited_from",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        default=None,
+    )
+    editedto = models.ForeignKey(
+        "self",
+        related_name="edited_to",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        default=None,
+    )
     deleted = models.BooleanField(default=False)
 
     @property

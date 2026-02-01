@@ -8,7 +8,9 @@ from backend.util import seconds_to_duration, get_tz_entry, WEEKDAYS
 def index(request):
     if request.user.is_authenticated:
         clients = Client.objects.filter(owner=request.user)
-        active = Entry.objects.filter(client__owner=request.user, end_time=None).first()
+        active = Entry.objects.filter(
+            client__owner=request.user, end_time=None, editedto=None
+        ).first()
 
         start_of_week = (
             datetime.now()
@@ -22,6 +24,7 @@ def index(request):
                 client__owner=request.user,
                 start_time__gte=start_of_week,
                 deleted=False,
+                editedto=None,
             )
             .order_by("start_time")
             .reverse()

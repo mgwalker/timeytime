@@ -8,15 +8,33 @@ def edit_entry(request):
     if request.user.is_authenticated:
         id = request.POST.get("id")
         if id:
-            entry = Entry.objects.get(id=id, client__owner=request.user)
+            current_entry = Entry.objects.get(id=id, client__owner=request.user)
+            edited_entry = Entry.objects.get(id=id, client__owner=request.user)
 
-            start_time = datetime.fromisoformat(request.POST.get("start_time"))
+            # Remove the PK and update the state in order to essentially clone
+            # the current entry into a new one.
+            edited_entry.pk = None
+            edited_entry._state.adding = True
 
-            end_time = datetime.fromisoformat(request.POST.get("end_time"))
+            print(request.POST)
+            # Update the start and end time of the new entry
+            edited_entry.start_time = datetime.fromisoformat(
+                request.POST.get("start_time")
+            )
+            # End time is not strictly required. The user could be updating
+            # the start time of the currently-active entry
+            if request.POST.get("end_time"):
+                edited_entry.end_time = datetime.fromisoformat(
+                    request.POST.get("end_time")
+                )
 
-            entry.start_time = start_time
-            entry.end_time = end_time
-            entry.save()
+            # Cross-link the old and new entries
+            edited_entry.editedfrom = current_entry
+            current_entry.editedto = edited_entry
+
+            # Saaaaave
+            edited_entry.save()
+            current_entry.save()
 
         return redirect("index")
 
