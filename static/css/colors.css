@@ -1,0 +1,30 @@
+:root {
+  --bg-header: black;
+  --bg-body: white;
+  --line-color: #888888;
+  --shadow-header: #888;
+  --text-primary: black;
+  --text-header: white;
+  --text-link: rgb(15, 105, 175);
+  --text-link-hover: rgb(150, 16, 91);
+  --text-link-visited: rgb(80, 50, 145);
+  --text-footer-link: white;
+  --text-link-on-dark: rgb(173, 210, 241);
+  --text-link-hover-on-dark: rgb(244, 137, 150);
+  --text-link-visited-on-dark: rgb(192, 155, 251);
+
+  @media (prefers-color-scheme: dark) {
+    --bg-header: rgb(10, 59, 97);
+    --bg-body: rgb(28, 28, 28);
+    --line-color: #dddddd;
+    --shadow-header: rgba(0,0,0,0);
+    --text-primary: rgb(199, 199, 209);
+    --text-header: rgb(199, 199, 209);
+    --text-link: rgb(173, 210, 241);
+    --text-link-hover: rgb(244, 137, 150);
+    --text-link-visited: rgb(192, 155, 251);
+    --text-link-hover-on-dark: rgb(150, 16, 91);
+    --text-link-visited-on-dark: rgb(80, 50, 145);
+    --text-footer-link-on-dark: white;
+  }
+}
