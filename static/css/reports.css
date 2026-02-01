@@ -1,0 +1,11 @@
+#reports {
+  table#week-report {
+    font-family: monospace;
+    border-spacing: 0;
+
+    td {
+      border-top: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+    }
+  }
+}

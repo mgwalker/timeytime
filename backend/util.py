@@ -13,6 +13,17 @@ WEEKDAYS = [
 ]
 
 
+def get_week_dates():
+    start_of_week = (
+        datetime.now()
+        .astimezone(ZoneInfo("America/Chicago"))
+        .replace(hour=0, minute=0, second=0, microsecond=0)
+    )
+    start_of_week -= timedelta(days=start_of_week.weekday() + 1)
+    end_of_week = start_of_week + timedelta(days=7)
+    return (start_of_week, end_of_week)
+
+
 def get_tz_entry(entry):
     entry.start_time = get_entry_start_time(entry)
     entry.end_time = get_entry_end_time(entry)

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="reports">
+  {{ start_of_week|date:"D M j, Y"}} - {{ end_of_week|date:"D M j, Y" }}
+  <table id="week-report">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>In</th>
+        <th>Out</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in entries %}
+      <tr>
+        <td>{{ entry.entry.client.name }}</td>
+        <td>{{ entry.entry.start_time|date:"Y - D M j, g:i A T" }}</td>
+        <td>{{ entry.entry.end_time|date:"D M j, g:i A T" }}</td>
+        <td>{{ entry.duration }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
