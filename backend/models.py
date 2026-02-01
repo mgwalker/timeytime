@@ -22,6 +22,7 @@ class Entry(models.Model):
     start_time = models.DateTimeField(default=_utc_now)
     end_time = models.DateTimeField(null=True, blank=True)
     note = models.TextField(null=True, default=None)
+    deleted = models.BooleanField(default=False)
 
     @property
     def active(self):

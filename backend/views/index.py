@@ -19,7 +19,9 @@ def index(request):
 
         entries = (
             Entry.objects.filter(
-                client__owner=request.user, start_time__gte=start_of_week
+                client__owner=request.user,
+                start_time__gte=start_of_week,
+                deleted=False,
             )
             .order_by("start_time")
             .reverse()
@@ -88,10 +90,7 @@ def index(request):
 
         for item in week:
             item["time"] = sum(item["time"])
-            active = next(
-                (entry for entry in item["entries"] if not entry.end_time), None
-            )
-            if active:
+            if active in item["entries"]:
                 item["active"] = True
                 item["from"] = active.start_time
             else:

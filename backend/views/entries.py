@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from backend.models import Entry
 from datetime import datetime
+from django.utils.timezone import UTC
 
 
 def edit_entry(request):
@@ -24,6 +25,10 @@ def delete_entry(request):
     if request.user.is_authenticated:
         id = request.GET.get("id")
         if id:
-            Entry.objects.filter(id=id, client__owner=request.user).delete()
+            entry = Entry.objects.get(id=id, client__owner=request.user)
+            if not entry.end_time:
+                entry.end_time = datetime.utcnow().replace(tzinfo=UTC)
+            entry.deleted = True
+            entry.save()
         return redirect("index")
     return redirect("index")
