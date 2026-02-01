@@ -9,6 +9,11 @@ body {
 
 h2, h3 {
   margin: 0;
+
+  &.dark {
+    background: var(--bg-h3-dark);
+    color: var(--text-h3-dark);
+  }
 }
 
 main {

@@ -35,7 +35,7 @@
 
   hr {
     width: calc(100% - 6px);
-    border: 3px solid black;
+    border: 3px solid var(--line-color);
   }
 
   div.timers {
@@ -83,8 +83,6 @@
     h3 {
       padding: 1rem;
       margin-bottom: 0.5rem;
-      background: #444;
-      color: white;
     }
   }
 
@@ -123,6 +121,7 @@
 
     hr {
       margin: 2rem 0;
+      border-color: var(--line-color);
     }
   }
 }

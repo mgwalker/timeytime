@@ -1,4 +1,9 @@
 #reports {
+  h3 {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
   table#week-report {
     font-family: monospace;
     border-spacing: 0;

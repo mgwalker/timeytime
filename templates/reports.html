@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tags %}
 
 {% block content %}
 <div id="reports">
-  {{ start_of_week|date:"D M j, Y"}} - {{ end_of_week|date:"D M j, Y" }}
+  <h3 class="dark">{{ start_of_week|date:"D M j, Y"}} - {{ end_of_week|date:"D M j, Y" }}</h3>
   <table id="week-report">
     <thead>
       <tr>
@@ -24,5 +25,15 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <hr>
+  {% for day in days %}
+    <h3 class="dark">
+      {{ day.day|date:"D M j, Y"}}
+    </h3>
+    {% for client in day.clients %}
+    {{ client.name }}, {{ client.duration }}
+    {% endfor %}
+  {% endfor %}
 </div>
 {% endblock %}
