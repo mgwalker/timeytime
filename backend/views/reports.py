@@ -48,6 +48,7 @@ def reports(request):
                 client_entries = list(client_entries)
                 client = {
                     "name": client_entries[0].client.name,
+                    "color": client_entries[0].client.color,
                     "duration": seconds_to_duration(
                         sum(
                             [

@@ -26,14 +26,30 @@
     </tbody>
   </table>
 
+  {% if days %}
   <hr>
-  {% for day in days %}
-    <h3 class="dark">
-      {{ day.day|date:"D M j, Y"}}
-    </h3>
-    {% for client in day.clients %}
-    {{ client.name }}, {{ client.duration }}
+  <table id="daily">
+    {% for day in days %}
+      <tr>
+        <th colspan="3">
+          <h3 class="dark">{{ day.day|date:"D M j, Y"}}</h3>
+        </th>
+      </tr>
+      {% for client in day.clients %}
+        <tr>
+          <td>
+            <div class="token" style="--color:{{ client.color }}"></div>
+          </td>
+          <td>
+            {{ client.name}}
+          </td>
+          <td>
+            {{ client.duration }}
+          </td>
+        </tr>
+      {% endfor %}
     {% endfor %}
-  {% endfor %}
+  </table>
+  {% endif %}
 </div>
 {% endblock %}

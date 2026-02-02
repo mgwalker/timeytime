@@ -13,4 +13,20 @@
       padding: 0.5rem 1rem;
     }
   }
+
+  #daily {
+    .token {
+      width: 1rem;
+      height: 1rem;
+      min-width: 1rem;
+      min-height: 1rem;
+    }
+
+    td {
+      padding: 1rem 1rem 1rem 0;
+      + td {
+        padding: 0 1rem;
+      }
+    }
+  }
 }
