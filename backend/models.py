@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import UTC
 
-from backend.util import isto_quick_timestamp
+from backend.isto import quick_timestamp
 
 
 def _utc_now():
@@ -51,14 +51,14 @@ class Entry(models.Model):
         cls.objects.create(client=client)
 
         if client.name == "Illinois Treasurer":
-            isto_quick_timestamp()
+            quick_timestamp()
 
     @classmethod
     def stop(cls):
         active = cls.objects.filter(end_time=None).first()
         if active:
             if active.client.name == "Illinois Treasurer":
-                isto_quick_timestamp()
+                quick_timestamp()
 
             active.end_time = datetime.utcnow().replace(tzinfo=UTC)
             active.save()
