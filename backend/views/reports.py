@@ -14,7 +14,13 @@ from backend.util import (
 
 def reports(request):
     if request.user.is_authenticated:
-        (start_of_week, end_of_week) = get_week_dates()
+        past = request.GET.get("past", 0)
+        try:
+            past = int(past)
+        except ValueError:
+            past = 0
+
+        (start_of_week, end_of_week) = get_week_dates(past)
 
         entries = Entry.objects.filter(
             start_time__gt=start_of_week,
@@ -64,6 +70,7 @@ def reports(request):
             request,
             "reports.html",
             {
+                "past": past,
                 "start_of_week": start_of_week,
                 "end_of_week": end_of_week - timedelta(days=1),
                 "entries": week,

@@ -12,12 +12,15 @@ WEEKDAYS = [
 ]
 
 
-def get_week_dates():
+def get_week_dates(past=0):
     start_of_week = (
         datetime.now()
         .astimezone(ZoneInfo("America/Chicago"))
         .replace(hour=0, minute=0, second=0, microsecond=0)
     )
+
+    start_of_week -= timedelta(weeks=past)
+
     start_of_week -= timedelta(days=start_of_week.weekday() + 1)
     end_of_week = start_of_week + timedelta(days=7)
     return (start_of_week, end_of_week)

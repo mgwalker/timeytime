@@ -25,6 +25,13 @@ main {
 
 a {
   cursor: pointer;
+  color: var(--text-link);
+  &:visited {
+    color: var(--text-link-visited);
+  }
+  &:hover {
+    color: var(--text-link-hover);
+  }
 }
 
 .mobile-only {

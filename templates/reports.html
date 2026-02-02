@@ -4,6 +4,13 @@
 
 {% block content %}
 <div id="reports">
+  <div class="flex margin-bottom-1">
+    <a href="?past={{ past|add:1 }}">⏮ older</a>
+    <div class="flex-stretch"></div>
+    {% if past > 0 %}
+      <a href="?past={{ past|add:-1 }}">newer ⏭</a>
+    {% endif %}
+  </div>
   <h3 class="dark">{{ start_of_week|date:"D M j, Y"}} - {{ end_of_week|date:"D M j, Y" }}</h3>
   <table id="week-report">
     <thead>
