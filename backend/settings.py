@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-*c#t55h4iufc)d3-+@ng0!s*fd)sc87n^nno$=vi52g#w6ncve"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG", False))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    os.environ.get("ALLOWED_HOSTS", None) if not DEBUG else "localhost",
+]
 
 
 # Application definition
@@ -45,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -56,7 +63,11 @@ MIDDLEWARE = [
     "django_otp.middleware.OTPMiddleware",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8080"]
+CSRF_TRUSTED_ORIGINS = [
+    ("https://" + os.environ.get("ALLOWED_HOSTS", ""))
+    if not DEBUG
+    else "http://localhost:8000",
+]
 
 ROOT_URLCONF = "backend.urls"
 
@@ -102,13 +113,20 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Passkey settings
-# The name of the relying party (RP). This is sometimes shown to the user when they register a Passkey.
-OTP_WEBAUTHN_RP_NAME = "timeytime"
-# This is necessary to bind the Passkey to a specific domain. This should be the domain of your website.
-OTP_WEBAUTHN_RP_ID = "localhost"
-# This is used to check the origin of the request and is used for security. It is similar to Django's CSRF_TRUSTED_ORIGINS setting.
+# The name of the relying party (RP). This is sometimes shown to the user when
+# they register a Passkey.
+OTP_WEBAUTHN_RP_NAME = os.environ.get("OTP_WEBAUTHN_RP_NAME", "timeytime")
+# This is necessary to bind the Passkey to a specific domain. This should be the
+# domain of your website.
+OTP_WEBAUTHN_RP_ID = os.environ.get("OTP_WEBAUTHN_RP_ID") if not DEBUG else "localhost"
+# This is used to check the origin of the request and is used for security.
+# It is similar to Django's CSRF_TRUSTED_ORIGINS setting.
 # The origins must always be a subdomain of the RP ID or the RP ID itself.
-OTP_WEBAUTHN_ALLOWED_ORIGINS = ["http://localhost:8000"]
+OTP_WEBAUTHN_ALLOWED_ORIGINS = [
+    os.environ.get("OTP_WEBAUTHN_ALLOWED_ORIGIN")
+    if not DEBUG
+    else "http://localhost:8000"
+]
 
 AUTHENTICATION_BACKENDS = [
     # "django.contrib.auth.backends.ModelBackend",
@@ -116,3 +134,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = "/"
+
+SECURE_HSTS_SECONDS = int(os.environ.get("HSTS_SECONDS", 0))
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT
+CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
