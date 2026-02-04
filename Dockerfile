@@ -1,7 +1,10 @@
 FROM python:3.12-slim-trixie
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+RUN mkdir /data
 WORKDIR /app
+
+RUN ln -s /data/conf/gunicorn.conf.py /app/gunicorn.conf.py
 
 ADD pyproject.toml .
 ADD uv.lock .
