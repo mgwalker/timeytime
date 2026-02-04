@@ -18,4 +18,4 @@ ADD templates ./templates
 
 RUN uv run manage.py collectstatic
 
-CMD [ "uv", "run", "gunicorn", "backend.wsgi" ]
+CMD [ "uv", "run", "gunicorn", "--bind 0.0.0.0:8000", "backend.wsgi" ]
