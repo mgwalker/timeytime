@@ -1,147 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
+{% load otp_webauthn %}
 
 {% block content %}
-<div id="index">
-  {% if active %}
-    <div class="active mobile-only">
-      <h3>Active timer:</h3>
-      <div class="token" style="--color: {{ active.client.color }}">{{ active.client.name }}</div>
-      <time class="flex-stretch" data-as-duration datetime="{{ active.start_time | date:"c" }}"></time>
-      <button class="red" data-stop-entry="{{ active.id }}">stop</button>
+
+<template id="passkey-registration-available-template">
+    <div>
+        <button type="button" id="passkey-register-button">Register Passkey</button>
+        <div id="passkey-register-status-message"></div>
     </div>
+</template>
+<span id="passkey-registration-placeholder"></span>
+{% render_otp_webauthn_register_scripts %}
 
-    <hr class="mobile-only">
-  {% endif %}
 
-  <div class="timers">
-    <h3>Start a timer</h3>
-    <div class="timers-row">
-    {% for client in clients %}
-      <div class="margin-bottom-1">
-        <button class="plain" id="{{ client.id }}">
-          <div class="token" style="--color: {{ client.color }}">
-            {{ client.name }}
-          </div>
-        </button>
-      </div>
-    {% endfor %}
-    </div>
-  </div>
-
-  <div class="entries wide-only">
-  {% if days.values|length %}
-  {% for day,entries in days.items %}
-  <h3 class="dark">{{ day }}</h3>
-    <table class="flex-stretch">
-      {% comment %}
-      <thead>
-        <th colspan="5"></th>
-        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">add note</th>
-        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">edit</th>
-        <th style="writing-mode: vertical-rl; transform: rotate(190deg);">delete</th>
-      </thead>
-      {% endcomment %}
-      <tbody>
-        {% for entry in entries %}
-          <tr>
-            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
-            <td>
-              {{ entry.client.name }}
-            </td>
-            <td>
-              {{ entry.start_time | date:"g:i A T" }}
-            </td>
-            <td>
-              {% if entry.end_time %}
-                {{ entry.end_time | date:"g:i A T" }}
-              {% else %}
-                <button class="red" data-stop-entry="{{ entry.id }}">stop</button>
-              {% endif %}
-            </td>
-            <td>
-              {% if entry.end_time %}
-                {{ entry.duration }}
-              {% else %}
-                <time data-as-duration datetime="{{ entry.start_time | date:"c" }}"></time>
-              {% endif %}
-            </td>
-            <td>🗒️</td>
-            <td>
-              <a data-edit-entry="{{ entry.id }}">✏️</a>
-            </td>
-            <td>
-              <a data-delete-entry="{{ entry.id }}" data-entry-start="{{ entry.start_time | date:"c" }}" data-client-name="{{ entry.client.name }}">🗑️</a>
-            </td>
-          </tr>
-          <tr data-edit-row="{{ entry.id }}" class="display-none">
-            <td colspan="8">
-              <form data-edit-entry class="flex-column" action="/edit-entry/" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ entry.id }}">
-                <label>Start:<input name="start_time_raw" type="datetime-local" value="{{ entry.start_time|date:"Y-m-d" }}T{{ entry.start_time|date:"H:i"}}"></label>
-                <label>End:<input name="end_time_raw" type="datetime-local" value="{{ entry.end_time|date:"Y-m-d" }}T{{ entry.end_time|date:"H:i"}}"></label>
-                <input type="hidden" name="start_time">
-                <input type="hidden" name="end_time">
-                <input type="submit" value="Save" role="button">
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endfor %}
-  {% endif %}
-  </div>
-
-  <div class="wide-only">
-  {% if today or week %}
-    <aside class="daily-summary">
-      {% if today %}
-      <h3>Summary for today</h3>
-      <table>
-        {% for entry in today.values %}
-          <tr>
-            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
-            <td>{{ entry.client.name }}</td>
-            <td>
-              {% if entry.active %}
-                <div data-duration-from="{{ entry.active | date:"c" }}" data-duration-offset="{{ entry.time }}"></div>
-              {% else %}
-                {{ entry.time }}
-              {% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
-      {% endif %}
-      {% if today and week %}
-      <hr>
-      {% endif %}
-      {% if week %}
-      <h3>Summary for the week</h3>
-      <table>
-        {% for entry in week %}
-          <tr>
-            <td><div class="token" style="--color:{{ entry.client.color }}"></div></td>
-            <td>{{ entry.client.name }}</td>
-            <td>
-              {% if entry.active %}
-                <div data-duration-from="{{ entry.from | date:"c" }}" data-duration-offset="{{ entry.time }}"></div>
-              {% else %}
-                {{ entry.time }}
-              {% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
-      {% endif %}
-    </aside>
-  {% endif %}
-  </div>
-</div>
 {% endblock %}
 
-{% block js_body %}
-<script type="module" src="{% static "js/index.js" %}"></script>
-{% endblock %}

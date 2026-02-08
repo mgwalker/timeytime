@@ -1,29 +1,12 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from backend.settings import DEBUG
-
 from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("reports/", views.reports, name="reports"),
-    # Clients
-    path("clients/", views.clients, name="clients"),
-    path("add-client/", views.add_client, name="add_client"),
-    path("edit-client/", views.edit_client, name="edit_client"),
-    path("delete-client/", views.delete_client, name="delete_client"),
-    # Timers
-    path("start", views.start_timer, name="start_timer"),
-    path("stop", views.stop_timer, name="stop_timer"),
-    # Entries
-    path("edit-entry/", views.edit_entry, name="edit_entry"),
-    path("delete-entry/", views.delete_entry, name="delete_entry"),
     # Authentication
+    path("admin/", admin.site.urls, name="admin"),
     path("webauthn/", include("django_otp_webauthn.urls", namespace="otp_webauthn")),
     path("logout/", views.logout, name="logout"),
 ]
-
-# Admin views
-if DEBUG:
-    urlpatterns.append(path("admin/", admin.site.urls, name="admin"))

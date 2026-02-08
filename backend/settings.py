@@ -129,7 +129,7 @@ OTP_WEBAUTHN_ALLOWED_ORIGINS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # "django.contrib.auth.backends.ModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
     "django_otp_webauthn.backends.WebAuthnBackend",
 ]
 
