@@ -17,5 +17,6 @@ ADD static ./static
 ADD templates ./templates
 
 RUN uv run manage.py collectstatic
+RUN uv run manage.py migrate
 
 CMD [ "uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi" ]

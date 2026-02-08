@@ -1,5 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
+
+from backend.settings import DEBUG
+
 from . import views
 
 urlpatterns = [
@@ -19,6 +22,8 @@ urlpatterns = [
     # Authentication
     path("webauthn/", include("django_otp_webauthn.urls", namespace="otp_webauthn")),
     path("logout/", views.logout, name="logout"),
-    # Admin views
-    path("admin/", admin.site.urls, name="admin"),
 ]
+
+# Admin views
+if DEBUG:
+    urlpatterns.append(path("admin/", admin.site.urls, name="admin"))
