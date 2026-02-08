@@ -64,7 +64,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    ("https://" + os.environ.get("ALLOWED_HOSTS", ""))
+    ("https://" + os.environ.get("ALLOWED_HOSTS", "fakesite.local"))
     if not DEBUG
     else "http://localhost:8000",
 ]
