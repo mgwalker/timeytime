@@ -35,7 +35,8 @@
 
   {% if days %}
   <hr>
-  <table id="daily">
+  <div class="flex">
+    <table id="daily">
     {% for day in days %}
       <tr>
         <th colspan="3">
@@ -56,7 +57,24 @@
         </tr>
       {% endfor %}
     {% endfor %}
-  </table>
+    </table>
+    <div class="flex-stretch">
+      <h3 class="dark">Weekly summary</h3>
+      <table id="summary">
+        <tbody>
+          {% for client in client_summary %}
+          <tr>
+            <td>
+              <div class="token" style="--color:{{ client.client.color }}"></div>
+            </td>
+            <td>{{ client.client.name }}</td>
+            <td>{{ client.duration }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
   {% endif %}
 </div>
 {% endblock %}

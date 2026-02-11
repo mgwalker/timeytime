@@ -34,6 +34,30 @@ def reports(request):
             for entry in entries
         ]
 
+        sorted_clients = [
+            list(entries)
+            for _, entries in groupby(
+                sorted(entries, key=lambda entry: entry.client.id),
+                lambda entry: entry.client.id,
+            )
+        ]
+
+        client_summary = [
+            {
+                "client": entries[0].client,
+                "duration": seconds_to_duration(
+                    sum(
+                        [
+                            (entry.end_time - entry.start_time).total_seconds()
+                            for entry in entries
+                        ]
+                    )
+                ),
+            }
+            for entries in sorted_clients
+        ]
+        print(client_summary)
+
         days = []
         for _, day_entries in groupby(entries, lambda entry: entry.start_time.day):
             day_entries = list(day_entries)
@@ -70,6 +94,7 @@ def reports(request):
             request,
             "reports.html",
             {
+                "client_summary": client_summary,
                 "past": past,
                 "start_of_week": start_of_week,
                 "end_of_week": end_of_week - timedelta(days=1),

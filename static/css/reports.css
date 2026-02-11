@@ -4,6 +4,11 @@
     margin-bottom: 0.5rem;
   }
 
+  table {
+    border-spacing: 0;
+    min-width: 50%;
+  }
+
   table#week-report {
     font-family: monospace;
     border-spacing: 0;
@@ -12,6 +17,11 @@
       border-top: 1px solid #ddd;
       padding: 0.5rem 1rem;
     }
+  }
+
+  .flex {
+    align-items: start;
+    gap: 2rem;
   }
 
   #daily {
@@ -27,6 +37,21 @@
       + td {
         padding: 0 1rem;
       }
+    }
+  }
+
+  #summary {
+    width: 100%;
+
+    .token {
+      width: 1rem;
+      height: 1rem;
+      min-width: 1rem;
+      min-height: 1rem;
+    }
+
+    td {
+      padding: 1rem 0;
     }
   }
 }
