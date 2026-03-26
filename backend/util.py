@@ -55,8 +55,14 @@ def seconds_to_duration(seconds):
     return f"{minutes} minutes"
 
 
+def get_entry_seconds(entry):
+    end = (
+        entry.end_time
+        if entry.end_time
+        else datetime.now(tz=ZoneInfo(entry.client.timezone))
+    )
+    return (end - entry.start_time).total_seconds()
+
+
 def get_entry_duration(entry):
-    if entry.end_time:
-        seconds = (entry.end_time - entry.start_time).total_seconds()
-        return seconds_to_duration(seconds)
-    return None
+    return seconds_to_duration(get_entry_seconds(entry))

@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from backend.models import Entry
 from backend.util import (
     get_entry_duration,
+    get_entry_seconds,
     get_tz_entry,
     get_week_dates,
     seconds_to_duration,
@@ -27,6 +28,11 @@ def reports(request):
             end_time__lt=end_of_week,
             deleted=False,
             editedto=None,
+        ) | Entry.objects.filter(
+            start_time__gt=start_of_week,
+            end_time=None,
+            deleted=False,
+            editedto=None,
         )
 
         week = [
@@ -46,12 +52,7 @@ def reports(request):
             {
                 "client": entries[0].client,
                 "duration": seconds_to_duration(
-                    sum(
-                        [
-                            (entry.end_time - entry.start_time).total_seconds()
-                            for entry in entries
-                        ]
-                    )
+                    sum([get_entry_seconds(entry) for entry in entries])
                 ),
             }
             for entries in sorted_clients
@@ -80,12 +81,7 @@ def reports(request):
                     "name": client_entries[0].client.name,
                     "color": client_entries[0].client.color,
                     "duration": seconds_to_duration(
-                        sum(
-                            [
-                                (entry.end_time - entry.start_time).total_seconds()
-                                for entry in client_entries
-                            ]
-                        )
+                        sum([get_entry_seconds(entry) for entry in client_entries])
                     ),
                 }
                 day["clients"].append(client)
