@@ -27,6 +27,10 @@ def get_week_dates(past=0):
 
 
 def get_tz_entry(entry):
+    """
+    Mutate the entry to have timezone-aware start and end times
+    along with a human-formatted duration.
+    """
     entry.start_time = get_entry_start_time(entry)
     entry.end_time = get_entry_end_time(entry)
     entry.duration = get_entry_duration(entry)

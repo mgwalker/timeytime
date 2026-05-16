@@ -18,6 +18,7 @@
     <h3>Start a timer</h3>
     <div class="timers-row">
     {% for client in clients %}
+      {% if client != active.client %}
       <div class="margin-bottom-1">
         <button class="plain" id="{{ client.id }}">
           <div class="token" style="--color: {{ client.color }}">
@@ -25,6 +26,7 @@
           </div>
         </button>
       </div>
+      {% endif %}
     {% endfor %}
     </div>
   </div>
